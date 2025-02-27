@@ -14,113 +14,145 @@
         <h1 class="text-3xl font-bold mb-6">Tienda</h1>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Producto 1 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
-                <img src="{{ url_for('static', filename='images/products/camisa.png') }}" alt="Camisa" class="product-image">
-                <h2 class="text-xl font-semibold mb-2 mt-4">Camisa</h2>
-                <p class="text-gray-300 mb-4">Camisa tematica</p>
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Comprar
-                </button>
+            <!-- Producto 1: Camisa -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <img src="{{ url_for('static', filename='images/products/camisa.png') }}" alt="Camisa" class="w-full h-48 object-cover mb-4 rounded">
+                <h2 class="text-xl font-semibold mb-2">Camisa</h2>
+                <p class="text-gray-300 mb-4">Precio: $25.99</p>
+                <p class="text-gray-300 mb-4">Cantidad disponible: {{ productos[0][3] }}</p>
+                <form action="{{ url_for('comprar', id=productos[0][0]) }}" method="POST" onsubmit="return confirmarCompra(event, {{ productos[0][3] }})">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" {% if productos[0][3] == 0 %}disabled{% endif %}>
+                        {% if productos[0][3] == 0 %}Agotado{% else %}Comprar{% endif %}
+                    </button>
+                </form>
             </div>
             
-            <!-- Producto 2 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
-                <img src="{{ url_for('static', filename='images/products/llavero.png') }}" alt="Llavero" class="product-image">
-                <h2 class="text-xl font-semibold mb-2 mt-4">Llavero</h2>
-                <p class="text-gray-300 mb-4">llavero tematico</p>
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Comprar
-                </button>
+            <!-- Producto 2: Llavero -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <img src="{{ url_for('static', filename='images/products/llavero.png') }}" alt="Llavero" class="w-full h-48 object-cover mb-4 rounded">
+                <h2 class="text-xl font-semibold mb-2">Llavero</h2>
+                <p class="text-gray-300 mb-4">Precio: $5.99</p>
+                <p class="text-gray-300 mb-4">Cantidad disponible: {{ productos[1][3] }}</p>
+                <form action="{{ url_for('comprar', id=productos[1][0]) }}" method="POST" onsubmit="return confirmarCompra(event, {{ productos[1][3] }})">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" {% if productos[1][3] == 0 %}disabled{% endif %}>
+                        {% if productos[1][3] == 0 %}Agotado{% else %}Comprar{% endif %}
+                    </button>
+                </form>
             </div>
             
-            <!-- Producto 3 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
-                <img src="{{ url_for('static', filename='images/products/taza.png') }}" alt="Taza" class="product-image">
-                <h2 class="text-xl font-semibold mb-2 mt-4">taza</h2>
-                <p class="text-gray-300 mb-4">taza tematica</p>
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Comprar
-                </button>
+            <!-- Producto 3: Taza -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <img src="{{ url_for('static', filename='images/products/taza.png') }}" alt="Taza" class="w-full h-48 object-cover mb-4 rounded">
+                <h2 class="text-xl font-semibold mb-2">Taza</h2>
+                <p class="text-gray-300 mb-4">Precio: $12.99</p>
+                <p class="text-gray-300 mb-4">Cantidad disponible: {{ productos[2][3] }}</p>
+                <form action="{{ url_for('comprar', id=productos[2][0]) }}" method="POST" onsubmit="return confirmarCompra(event, {{ productos[2][3] }})">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" {% if productos[2][3] == 0 %}disabled{% endif %}>
+                        {% if productos[2][3] == 0 %}Agotado{% else %}Comprar{% endif %}
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Producto 4: Suéter -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <img src="{{ url_for('static', filename='images/products/sueter.jpg') }}" alt="Suéter" class="w-full h-48 object-cover mb-4 rounded">
+                <h2 class="text-xl font-semibold mb-2">Suéter</h2>
+                <p class="text-gray-300 mb-4">Precio: $35.99</p>
+                <p class="text-gray-300 mb-4">Cantidad disponible: {{ productos[3][3] }}</p>
+                <form action="{{ url_for('comprar', id=productos[3][0]) }}" method="POST" onsubmit="return confirmarCompra(event, {{ productos[3][3] }})">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" {% if productos[3][3] == 0 %}disabled{% endif %}>
+                        {% if productos[3][3] == 0 %}Agotado{% else %}Comprar{% endif %}
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Producto 5: Zapatos -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <img src="{{ url_for('static', filename='images/products/zapatos.jpg') }}" alt="Zapatos" class="w-full h-48 object-cover mb-4 rounded">
+                <h2 class="text-xl font-semibold mb-2">Zapatos</h2>
+                <p class="text-gray-300 mb-4">Precio: $49.99</p>
+                <p class="text-gray-300 mb-4">Cantidad disponible: {{ productos[4][3] }}</p>
+                <form action="{{ url_for('comprar', id=productos[4][0]) }}" method="POST" onsubmit="return confirmarCompra(event, {{ productos[4][3] }})">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" {% if productos[4][3] == 0 %}disabled{% endif %}>
+                        {% if productos[4][3] == 0 %}Agotado{% else %}Comprar{% endif %}
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Producto 6: Katana -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <img src="{{ url_for('static', filename='images/products/katana.jpg') }}" alt="Katana" class="w-full h-48 object-cover mb-4 rounded">
+                <h2 class="text-xl font-semibold mb-2">Katana</h2>
+                <p class="text-gray-300 mb-4">Precio: $99.99</p>
+                <p class="text-gray-300 mb-4">Cantidad disponible: {{ productos[5][3] }}</p>
+                <form action="{{ url_for('comprar', id=productos[5][0]) }}" method="POST" onsubmit="return confirmarCompra(event, {{ productos[5][3] }})">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" {% if productos[5][3] == 0 %}disabled{% endif %}>
+                        {% if productos[5][3] == 0 %}Agotado{% else %}Comprar{% endif %}
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Producto 7: Máscara -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <img src="{{ url_for('static', filename='images/products/mascara.jpg') }}" alt="Máscara" class="w-full h-48 object-cover mb-4 rounded">
+                <h2 class="text-xl font-semibold mb-2">Máscara</h2>
+                <p class="text-gray-300 mb-4">Precio: $19.99</p>
+                <p class="text-gray-300 mb-4">Cantidad disponible: {{ productos[6][3] }}</p>
+                <form action="{{ url_for('comprar', id=productos[6][0]) }}" method="POST" onsubmit="return confirmarCompra(event, {{ productos[6][3] }})">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" {% if productos[6][3] == 0 %}disabled{% endif %}>
+                        {% if productos[6][3] == 0 %}Agotado{% else %}Comprar{% endif %}
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Producto 8: Termo -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <img src="{{ url_for('static', filename='images/products/termo.jpg') }}" alt="Termo" class="w-full h-48 object-cover mb-4 rounded">
+                <h2 class="text-xl font-semibold mb-2">Termo</h2>
+                <p class="text-gray-300 mb-4">Precio: $14.99</p>
+                <p class="text-gray-300 mb-4">Cantidad disponible: {{ productos[7][3] }}</p>
+                <form action="{{ url_for('comprar', id=productos[7][0]) }}" method="POST" onsubmit="return confirmarCompra(event, {{ productos[7][3] }})">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" {% if productos[7][3] == 0 %}disabled{% endif %}>
+                        {% if productos[7][3] == 0 %}Agotado{% else %}Comprar{% endif %}
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Producto 9: Short -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <img src="{{ url_for('static', filename='images/products/short.jpg') }}" alt="Short" class="w-full h-48 object-cover mb-4 rounded">
+                <h2 class="text-xl font-semibold mb-2">Short</h2>
+                <p class="text-gray-300 mb-4">Precio: $22.99</p>
+                <p class="text-gray-300 mb-4">Cantidad disponible: {{ productos[8][3] }}</p>
+                <form action="{{ url_for('comprar', id=productos[8][0]) }}" method="POST" onsubmit="return confirmarCompra(event, {{ productos[8][3] }})">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" {% if productos[8][3] == 0 %}disabled{% endif %}>
+                        {% if productos[8][3] == 0 %}Agotado{% else %}Comprar{% endif %}
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 
-    <div class="container mx-auto p-4">
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Producto 4 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
-                <img src="{{ url_for('static', filename='images/products/sueter.jpg') }}" alt="Suéter" class="product-image">
-                <h2 class="text-xl font-semibold mb-2 mt-4">Suéter</h2>
-                <p class="text-gray-300 mb-4">Suéter tematico</p>
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Comprar
-                </button>
-            </div>
-            
-            <!-- Producto 5 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
-                <img src="{{ url_for('static', filename='images/products/zapatos.jpg') }}" alt="Zapatos" class="product-image">
-                <h2 class="text-xl font-semibold mb-2 mt-4">Zapatos</h2>
-                <p class="text-gray-300 mb-4">Zapatos tematico</p>
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Comprar
-                </button>
-            </div>
-            
-            <!-- Producto 6 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
-                <img src="{{ url_for('static', filename='images/products/katana.jpg') }}" alt="Katana" class="product-image">
-                <h2 class="text-xl font-semibold mb-2 mt-4">Katana</h2>
-                <p class="text-gray-300 mb-4">Katana tematica</p>
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Comprar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="container mx-auto p-4">
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Producto 7 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
-                <img src="{{ url_for('static', filename='images/products/mascara.jpg') }}" alt="Máscara" class="product-image">
-                <h2 class="text-xl font-semibold mb-2 mt-4">Máscara</h2>
-                <p class="text-gray-300 mb-4">Máscara Tematica</p>
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Comprar
-                </button>
-            </div>
-            
-            <!-- Producto 8 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
-                <img src="{{ url_for('static', filename='images/products/termo.jpg') }}" alt="Termo" class="product-image">
-                <h2 class="text-xl font-semibold mb-2 mt-4">Termo</h2>
-                <p class="text-gray-300 mb-4">Termo tematico</p>
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Comprar
-                </button>
-            </div>
-            
-            <!-- Producto 9 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
-                <img src="{{ url_for('static', filename='images/products/short.jpg') }}" alt="Short" class="product-image">
-                <h2 class="text-xl font-semibold mb-2 mt-4">Short</h2>
-                <p class="text-gray-300 mb-4">Short tematico</p>
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Comprar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pie de página -->
     <footer class="bg-gray-800 text-white p-4 mt-8">
         <div class="container mx-auto text-center">
             <p>&copy; 2023 CazaTroll. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <script>
+        function confirmarCompra(event, cantidad) {
+            if (cantidad <= 0) {
+                alert('Producto agotado');
+                return false;
+            }
+            if (confirm('¿Estás seguro de que deseas comprar este producto?')) {
+                alert('¡Gracias por tu compra!');
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+    </script>
 </body>
-</html> 
+</html>

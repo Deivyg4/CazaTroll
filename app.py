@@ -1,9 +1,12 @@
 # Importación de módulos necesarios
-from flask import Flask, request, jsonify, render_template, session, redirect, url_for  # Flask para la aplicación web, request para manejar peticiones, jsonify para respuestas JSON, render_template para renderizar HTML, session para manejar sesiones, redirect para redirigir, url_for para generar URLs
+from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash  # Flask para la aplicación web, request para manejar peticiones, jsonify para respuestas JSON, render_template para renderizar HTML, session para manejar sesiones, redirect para redirigir, url_for para generar URLs, flash para mostrar mensajes
 from functools import wraps  # Para crear decoradores
 from auth_service import DatabaseAuth  # Módulo personalizado para autenticación
 from dotenv import load_dotenv  # Para cargar variables de entorno
 import os  # Para interactuar con el sistema operativo
+from werkzeug.security import generate_password_hash, check_password_hash
+import psycopg2
+from psycopg2 import sql
 
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
@@ -14,6 +17,20 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 # Instancia del servicio de autenticación
 auth = DatabaseAuth()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:PanchoLaika4445.@@localhost:5423/CazaTroll'
+
+
+# Configuración de la base de datos
+DATABASE_URI = "dbname='nombre_bd' user='usuario' password='contraseña' host='localhost'"
+
+def get_db_connection():
+    return psycopg2.connect(
+        host="localhost",
+        port=5423,  # Cambia esto a 5423
+        dbname="CazaTroll",
+        user="postgres",
+        password="PanchoLaika4445.@"
+    )
 
 # Decorador para proteger rutas que requieren autenticación
 def login_required(f):
@@ -47,7 +64,13 @@ def register_page():
 # Ruta para la página de la tienda
 @app.route('/store')
 def store():
-    return render_template('store.html')
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM productos;')
+    productos = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('store.html', productos=productos)
 
 # Ruta API para cerrar sesión
 @app.route('/api/logout', methods=['POST'])
@@ -147,6 +170,93 @@ def make_admin(user_id):
 def contacto():
     return render_template('contacto.html')
 
+# Ruta para la tienda
+@app.route('/tienda')
+def tienda():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM productos;')
+    productos = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('store.html', productos=productos)
+
+# Ruta para comprar un producto
+@app.route('/comprar/<int:id>', methods=['POST'])
+def comprar(id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    try:
+        # Obtener la cantidad actual del producto
+        cur.execute('SELECT cantidad FROM productos WHERE id = %s;', (id,))
+        cantidad_actual = cur.fetchone()[0]
+        
+        if cantidad_actual > 0:
+            # Restar 1 a la cantidad disponible
+            nueva_cantidad = cantidad_actual - 1
+            cur.execute('UPDATE productos SET cantidad = %s WHERE id = %s;', (nueva_cantidad, id))
+            conn.commit()
+            flash('¡Compra realizada con éxito!', 'success')
+        else:
+            flash('El producto está agotado.', 'error')
+    
+    except Exception as e:
+        conn.rollback()
+        flash('Ocurrió un error al procesar la compra.', 'error')
+        print(f"Error: {e}")
+    
+    finally:
+        cur.close()
+        conn.close()
+    
+    return redirect(url_for('store'))
+
+# Ruta para administrar productos (solo admin)
+@app.route('/admin')
+def admin():
+    if not session.get('is_admin'):
+        return redirect(url_for('tienda'))
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM productos;')
+    productos = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('admin.html', productos=productos)
+
+# Ruta para agregar un producto (solo admin)
+@app.route('/agregar_producto', methods=['POST'])
+def agregar_producto():
+    if not session.get('is_admin'):
+        return redirect(url_for('tienda'))
+    nombre = request.form['nombre']
+    precio = float(request.form['precio'])
+    cantidad = int(request.form['cantidad'])
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO productos (nombre, precio, cantidad) VALUES (%s, %s, %s);', (nombre, precio, cantidad))
+    conn.commit()
+    cur.close()
+    conn.close()
+    flash('Producto agregado correctamente', 'success')
+    return redirect(url_for('admin'))
+
+# Ruta para eliminar un producto (solo admin)
+@app.route('/eliminar_producto/<int:id>')
+def eliminar_producto(id):
+    if not session.get('is_admin'):
+        return redirect(url_for('tienda'))
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM productos WHERE id = %s;', (id,))
+    conn.commit()
+    cur.close()
+    conn.close()
+    flash('Producto eliminado correctamente', 'success')
+    return redirect(url_for('admin'))
+
 # Punto de entrada de la aplicación
+# Inicia la aplicación en modo debug
 if __name__ == '__main__':
-    app.run(debug=True)  # Inicia la aplicación en modo debug
+    app.run(debug=True)
