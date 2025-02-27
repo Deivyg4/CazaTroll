@@ -15,8 +15,9 @@
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Producto 1 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-2">Camisa</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
+                <img src="{{ url_for('static', filename='images/products/camisa.png') }}" alt="Camisa" class="product-image">
+                <h2 class="text-xl font-semibold mb-2 mt-4">Camisa</h2>
                 <p class="text-gray-300 mb-4">Camisa tematica</p>
                 <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Comprar
@@ -24,8 +25,9 @@
             </div>
             
             <!-- Producto 2 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-2">Llavero</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
+                <img src="{{ url_for('static', filename='images/products/llavero.png') }}" alt="Llavero" class="product-image">
+                <h2 class="text-xl font-semibold mb-2 mt-4">Llavero</h2>
                 <p class="text-gray-300 mb-4">llavero tematico</p>
                 <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Comprar
@@ -33,9 +35,80 @@
             </div>
             
             <!-- Producto 3 -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-2">taza</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
+                <img src="{{ url_for('static', filename='images/products/taza.png') }}" alt="Taza" class="product-image">
+                <h2 class="text-xl font-semibold mb-2 mt-4">taza</h2>
                 <p class="text-gray-300 mb-4">taza tematica</p>
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Comprar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Producto 4 -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
+                <img src="{{ url_for('static', filename='images/products/sueter.jpg') }}" alt="Suéter" class="product-image">
+                <h2 class="text-xl font-semibold mb-2 mt-4">Suéter</h2>
+                <p class="text-gray-300 mb-4">Suéter tematico</p>
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Comprar
+                </button>
+            </div>
+            
+            <!-- Producto 5 -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
+                <img src="{{ url_for('static', filename='images/products/zapatos.jpg') }}" alt="Zapatos" class="product-image">
+                <h2 class="text-xl font-semibold mb-2 mt-4">Zapatos</h2>
+                <p class="text-gray-300 mb-4">Zapatos tematico</p>
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Comprar
+                </button>
+            </div>
+            
+            <!-- Producto 6 -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
+                <img src="{{ url_for('static', filename='images/products/katana.jpg') }}" alt="Katana" class="product-image">
+                <h2 class="text-xl font-semibold mb-2 mt-4">Katana</h2>
+                <p class="text-gray-300 mb-4">Katana tematica</p>
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Comprar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Producto 7 -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
+                <img src="{{ url_for('static', filename='images/products/mascara.jpg') }}" alt="Máscara" class="product-image">
+                <h2 class="text-xl font-semibold mb-2 mt-4">Máscara</h2>
+                <p class="text-gray-300 mb-4">Máscara Tematica</p>
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Comprar
+                </button>
+            </div>
+            
+            <!-- Producto 8 -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
+                <img src="{{ url_for('static', filename='images/products/termo.jpg') }}" alt="Termo" class="product-image">
+                <h2 class="text-xl font-semibold mb-2 mt-4">Termo</h2>
+                <p class="text-gray-300 mb-4">Termo tematico</p>
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Comprar
+                </button>
+            </div>
+            
+            <!-- Producto 9 -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md product-container">
+                <img src="{{ url_for('static', filename='images/products/short.jpg') }}" alt="Short" class="product-image">
+                <h2 class="text-xl font-semibold mb-2 mt-4">Short</h2>
+                <p class="text-gray-300 mb-4">Short tematico</p>
                 <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Comprar
                 </button>
