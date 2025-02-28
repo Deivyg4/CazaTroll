@@ -52,14 +52,55 @@ def index():
     return render_template('index.html')
 
 # Ruta para la página de login
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login_page():
-    return render_template('login.html')  # Renderiza la plantilla login.html
+    if request.method == 'POST':
+        # Procesar el formulario de inicio de sesión
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        success, message = auth.login_user(
+            username=username,
+            password=password
+        )
+
+        if success:
+            session['user_id'] = message['user_id']
+            session['role_id'] = message['role_id']
+            flash('Inicio de sesión exitoso.', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash(message, 'error')
+            return redirect(url_for('login_page'))
+
+    return render_template('login.html')
 
 # Ruta para la página de registro
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register_page():
-    return render_template('register.html')  # Renderiza la plantilla register.html
+    if request.method == 'POST':
+        # Procesar el formulario de registro
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        role_id = 2  # Todos los nuevos usuarios serán usuarios normales por defecto
+
+        success, message = auth.register_user(
+            username=username,
+            password=password,
+            email=email,
+            role_id=role_id
+        )
+
+        if success:
+            session['role_id'] = role_id
+            flash('Registro exitoso. Por favor, inicia sesión.', 'success')
+            return redirect(url_for('login_page'))
+        else:
+            flash(message, 'error')
+            return redirect(url_for('register_page'))
+
+    return render_template('register.html')
 
 # Ruta para la página de la tienda
 @app.route('/store')
@@ -77,41 +118,6 @@ def store():
 def logout():
     session.clear()  # Limpia todos los datos de la sesión
     return jsonify({'success': True, 'message': 'Sesión cerrada correctamente'})  # Respuesta JSON de éxito
-
-# Ruta API para registro de usuarios
-@app.route('/api/register', methods=['POST'])
-def register():
-    data = request.json
-    role_id = 2  # Todos los nuevos usuarios serán usuarios normales por defecto
-    success, message = auth.register_user(
-        username=data.get('username'),
-        password=data.get('password'),
-        email=data.get('email'),
-        role_id=role_id
-    )
-    
-    if success:
-        session['role_id'] = role_id
-        return jsonify({'success': True, 'message': message})
-    
-    return jsonify({'success': False, 'message': message})
-
-# Ruta API para inicio de sesión
-@app.route('/api/login', methods=['POST'])
-def login():
-    data = request.json
-    success, message = auth.login_user(
-        username=data.get('username'),
-        password=data.get('password')
-    )
-    
-    if success:
-        session['user_id'] = message['user_id']  # 'user_id' es el valor de 'id' de la base de datos
-        session['role_id'] = message['role_id']
-        print("Sesión después del login:", session)  # Imprime la sesión para depuración
-        return jsonify({'success': True, 'message': 'Login exitoso'})
-    
-    return jsonify({'success': False, 'message': message})
 
 # Ruta API para obtener todos los usuarios con más detalles (solo admin)
 @app.route('/api/users', methods=['GET'])

@@ -15,34 +15,17 @@
 <body class="bg-gray-900 text-gray-100">
     {% include 'partials/_navbar.html' %}
     
-    <!-- Contenedor principal para el contenido de la página, centrado horizontalmente y con relleno -->
+    <!-- Contenedor principal para la gestión de usuarios -->
     <div class="container mx-auto p-4">
-        <h1 class="text-3xl font-bold mb-6">Administrar Productos</h1>
-        <form action="{{ url_for('agregar_producto') }}" method="POST" class="mb-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <input type="text" name="nombre" placeholder="Nombre del producto" class="p-2 border rounded" required>
-                <input type="number" step="0.01" name="precio" placeholder="Precio" class="p-2 border rounded" required>
-                <input type="number" name="cantidad" placeholder="Cantidad" class="p-2 border rounded" required>
-            </div>
-            <button type="submit" class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                Agregar Producto
-            </button>
-        </form>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {% for producto in productos %}
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-2">{{ producto[1] }}</h2>
-                <p class="text-gray-300 mb-4">Precio: ${{ producto[2] }}</p>
-                <p class="text-gray-300 mb-4">Cantidad: {{ producto[3] }}</p>
-                <a href="{{ url_for('eliminar_producto', id=producto[0]) }}" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    Eliminar
-                </a>
-            </div>
-            {% endfor %}
+        <h1 class="text-3xl font-bold mb-6">Administrar Usuarios</h1>
+
+        <!-- Lista de usuarios -->
+        <div id="users" class="space-y-4">
+            <!-- Los usuarios se cargarán dinámicamente aquí -->
         </div>
     </div>
 
-    <!-- Script de Javascript para cargar la lista de usuarios de la API -->
+    <!-- Script de Javascript para cargar y editar usuarios -->
     <script>
         // Función asíncrona para cargar los usuarios
         async function loadUsers() {
@@ -63,23 +46,36 @@
                 if (data.success) {
                     const usersDiv = document.getElementById('users');
                     usersDiv.innerHTML = data.users.map(user => `
-                        <div class="flex items-center justify-between mb-4 p-4 border-b" data-user-id="${user.id}">
-                            <div>
-                                <span class="font-bold">${user.username}</span>
-                                <span class="text-gray-600">(${user.email})</span>
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-md" data-user-id="${user.id}">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300">Nombre de usuario</label>
+                                    <input type="text" value="${user.username}" class="user-username mt-1 block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-100">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300">Correo electrónico</label>
+                                    <input type="email" value="${user.email}" class="user-email mt-1 block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-100">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300">Rol</label>
+                                    <select class="user-role mt-1 block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-100">
+                                        <option value="1" ${user.role_id === 1 ? 'selected' : ''}>Admin</option>
+                                        <option value="2" ${user.role_id === 2 ? 'selected' : ''}>Usuario</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <select class="p-2 border rounded role-select" data-user-id="${user.id}">
-                                    <option value="1" ${user.role_id === 1 ? 'selected' : ''}>Admin</option>
-                                    <option value="2" ${user.role_id === 2 ? 'selected' : ''}>Usuario</option>
-                                </select>
-                                <button onclick="editUser(${user.id})" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Editar</button>
-                                <button onclick="deleteUser(${user.id})" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Eliminar</button>
+                            <div class="mt-4 flex justify-end space-x-2">
+                                <button onclick="saveUser(${user.id})" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Guardar
+                                </button>
+                                <button onclick="deleteUser(${user.id})" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                    Eliminar
+                                </button>
                             </div>
                         </div>
                     `).join('');
                 } else {
-                    document.getElementById('users').innerHTML = '<p class="text-red-500">Error al cargar los usuarios</p>';
+                    usersDiv.innerHTML = '<p class="text-red-500">Error al cargar los usuarios</p>';
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -87,35 +83,36 @@
             }
         }
 
-        async function editUser(userId) {
+        // Función para guardar los cambios de un usuario
+        async function saveUser(userId) {
             const userDiv = document.querySelector(`[data-user-id="${userId}"]`);
-            const username = prompt('Nuevo nombre de usuario:');
-            const email = prompt('Nuevo correo electrónico:');
-            
-            if (username && email) {
-                try {
-                    const response = await fetch(`/api/users/${userId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ username, email })
-                    });
+            const username = userDiv.querySelector('.user-username').value;
+            const email = userDiv.querySelector('.user-email').value;
+            const roleId = userDiv.querySelector('.user-role').value;
 
-                    const data = await response.json();
-                    if (data.success) {
-                        alert('Usuario actualizado correctamente');
-                        loadUsers();
-                    } else {
-                        alert('Error al actualizar el usuario: ' + data.message);
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Error al actualizar el usuario');
+            try {
+                const response = await fetch(`/api/users/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, email, role_id: roleId })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Usuario actualizado correctamente');
+                    loadUsers();
+                } else {
+                    alert('Error al actualizar el usuario: ' + data.message);
                 }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al actualizar el usuario');
             }
         }
 
+        // Función para eliminar un usuario
         async function deleteUser(userId) {
             if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
                 try {
