@@ -79,6 +79,12 @@
 
     <!-- Contenedor para el mapa, con altura fija y estilos de Tailwind CSS para bordes redondeados y sombra -->
     <div id="map" class="mt-6 h-96 rounded-lg shadow-md"></div>
+
+    {% if 'user_id' in session %}
+        <p>Bienvenido, {{ session['username'] }}!</p>
+    {% else %}
+        <p>Por favor, inicia sesión.</p>
+    {% endif %}
   </main>
 
   <!-- Botón fijo en la esquina inferior derecha para alternar el modo oscuro, con estilos de Tailwind CSS -->

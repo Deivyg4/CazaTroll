@@ -113,12 +113,6 @@ def store():
     conn.close()
     return render_template('store.html', productos=productos)
 
-# Ruta API para cerrar sesión
-@app.route('/api/logout', methods=['POST'])
-def logout():
-    session.clear()  # Limpia todos los datos de la sesión
-    return jsonify({'success': True, 'message': 'Sesión cerrada correctamente'})  # Respuesta JSON de éxito
-
 # Ruta API para obtener todos los usuarios con más detalles (solo admin)
 @app.route('/api/users', methods=['GET'])
 @login_required
@@ -261,6 +255,13 @@ def eliminar_producto(id):
     conn.close()
     flash('Producto eliminado correctamente', 'success')
     return redirect(url_for('admin'))
+
+# Ruta para cerrar sesión
+@app.route('/logout')
+def logout():
+    session.clear()  # Limpia todos los datos de la sesión
+    flash('Has cerrado sesión correctamente.', 'success')
+    return redirect(url_for('index'))
 
 # Punto de entrada de la aplicación
 # Inicia la aplicación en modo debug
