@@ -5,6 +5,7 @@
             <a href="{{ url_for('index') }}" class="text-gray-300 hover:text-gray-100">Inicio</a>
             <a href="{{ url_for('store') }}" class="text-gray-300 hover:text-gray-100">Tienda</a>
             <a href="{{ url_for('contacto') }}" class="text-gray-300 hover:text-gray-100">Contacto</a>
+            <a href="{{ url_for('donaciones') }}" class="text-gray-300 hover:text-gray-100">Donaciones</a>
             {% if 'user_id' in session %}
                 <a href="{{ url_for('logout') }}" class="text-gray-300 hover:text-gray-100">Salir</a>
             {% else %}

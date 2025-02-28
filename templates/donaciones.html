@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donaciones - CazaTroll</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-gray-900 text-gray-100">
+    {% include 'partials/_navbar.html' %}
+    
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold text-center mb-6">Donaciones</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Sección de la foto -->
+            <div class="flex justify-center items-center">
+                <img src="{{ url_for('static', filename='images/donaciones.jpg') }}" alt="Foto de donaciones" class="rounded-lg shadow-lg w-full max-w-md">
+            </div>
+
+            <!-- Sección de datos de pago móvil -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-4">Datos de Pago Móvil</h2>
+                <div class="space-y-4 text-gray-300">
+                    <p><strong>Banco:</strong>Venezuela 0102 o Bancamiga 0172</p>
+                    <p><strong>Número de Teléfono:</strong> 0412-0185456</p>
+                    <p><strong>Cédula:</strong> V-29905144</p>
+                    <p><strong>Alias:</strong> @deivyg</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

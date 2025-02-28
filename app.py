@@ -263,6 +263,11 @@ def logout():
     flash('Has cerrado sesión correctamente.', 'success')
     return redirect(url_for('index'))
 
+# Ruta para la página de donaciones
+@app.route('/donaciones')
+def donaciones():
+    return render_template('donaciones.html')
+
 # Punto de entrada de la aplicación
 # Inicia la aplicación en modo debug
 if __name__ == '__main__':
