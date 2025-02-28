@@ -16,9 +16,20 @@ module.exports = {
   // En este caso está vacío, pero aquí se podrían añadir colores personalizados, fuentes, etc.
   theme: {
     extend: {
+      colors: {
+        'custom-blue': '#1e40af',
+        'custom-green': '#10b981',
+      },
+      fontFamily: {
+        'sans': ['Inter', 'sans-serif'],
+      },
       backgroundImage: {
         'custom-bg': "url('/static/images/background.jpg')"
-      }
+      },
+      objectFit: {
+        'cover': 'cover',
+        'contain': 'contain',
+      },
     },
   },
   
@@ -26,5 +37,6 @@ module.exports = {
   // Aquí se pueden añadir plugins adicionales para extender funcionalidades
   plugins: [
     require('@tailwindcss/forms'),  // Añade el plugin de forms si lo necesitas
+    require('@tailwindcss/typography'),
   ],
 };
